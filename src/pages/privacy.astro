@@ -1,0 +1,52 @@
+---
+import { Container } from '@/components/container';
+import { PageTitle } from '@/components/page-title';
+import { TextLink } from '@/components/text-link';
+import BaseLayout from '@/layouts/base-layout.astro';
+import { CONTACT_EMAIL } from '@/lib/site';
+---
+
+<BaseLayout title="プライバシーポリシー" noindex>
+  <Container size="narrow" className="py-12">
+    <PageTitle>プライバシーポリシー</PageTitle>
+    <div class="mt-8 space-y-10">
+      <section>
+        <h2 class="text-h2 font-bold">個人情報の取り扱い</h2>
+        <p class="mt-4">
+          お問い合わせでいただいたメールアドレスなどの情報は、ご連絡の目的にのみ使用し、第三者へ提供することはありません。
+        </p>
+      </section>
+      <section>
+        <h2 class="text-h2 font-bold">アクセス解析</h2>
+        <p class="mt-4">
+          当ブログは Cloudflare Web Analytics を利用しています。これは Cookie を使用せず、個人を特定しない統計情報のみを計測します。
+        </p>
+      </section>
+      <section>
+        <h2 class="text-h2 font-bold">掲載内容について</h2>
+        <p class="mt-4">
+          当ブログは家族の記録を掲載するにあたり、顔写真を掲載せず、名前はニックネームのみを使用する方針です。場所や施設名など、個人を特定できる情報も掲載しません。
+        </p>
+      </section>
+      <section>
+        <h2 class="text-h2 font-bold">医療・健康情報について</h2>
+        <p class="mt-4">
+          当ブログの健康・医療に関する内容は、個人の体験に基づく記録であり、医療上の判断を目的とするものではありません。体調に関する判断は、かかりつけの医療機関にご相談ください。
+        </p>
+      </section>
+      <section>
+        <h2 class="text-h2 font-bold">著作権</h2>
+        <p class="mt-4">
+          当ブログに掲載されている文章・写真の著作権は、当ブログの執筆者に帰属します。引用の際は、出典として当ブログの該当ページへのリンクを明記してください。
+        </p>
+      </section>
+      <section>
+        <h2 class="text-h2 font-bold">お問い合わせ</h2>
+        <p class="mt-4">
+          本ポリシーに関するお問い合わせは、<TextLink href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</TextLink>
+          までご連絡ください。
+        </p>
+      </section>
+    </div>
+  </Container>
+</BaseLayout>

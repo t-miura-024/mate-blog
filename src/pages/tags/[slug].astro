@@ -1,0 +1,57 @@
+---
+import { MICROCMS_API_KEY, MICROCMS_SERVICE_DOMAIN } from 'astro:env/server';
+import { ArticleCard } from '@/components/article-card';
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import { Container } from '@/components/container';
+import { EmptyState } from '@/components/empty-state';
+import { PageTitle } from '@/components/page-title';
+import BaseLayout from '@/layouts/base-layout.astro';
+import { collectTags, getArticlesByTag, toArticleCardData, type ArticleCardData } from '@/lib/articles';
+import { getArticleSource } from '@/lib/microcms';
+
+export async function getStaticPaths() {
+  const source = getArticleSource({
+    serviceDomain: MICROCMS_SERVICE_DOMAIN,
+    apiKey: MICROCMS_API_KEY,
+  });
+  const articles = await source.listAll();
+  return collectTags(articles).map(({ label, count }) => ({
+    params: { slug: label },
+    props: {
+      tag: label,
+      count,
+      articles: getArticlesByTag(articles, label).map(toArticleCardData),
+    },
+  }));
+}
+
+type Props = {
+  tag: string;
+  count: number;
+  articles: ArticleCardData[];
+};
+
+const { tag, count, articles } = Astro.props;
+---
+
+<BaseLayout title={`タグ: ${tag}`} description={`タグ「${tag}」の記事をまとめています。`} noindex={count < 2}>
+  <Container className="py-12">
+    <Breadcrumbs items={[{ label: '記事一覧', href: '/articles/' }, { label: `タグ: ${tag}` }]} />
+    <div class="mt-6">
+      <PageTitle>{`タグ: ${tag}`}</PageTitle>
+    </div>
+    {
+      articles.length > 0 ? (
+        <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {articles.map((card) => (
+            <ArticleCard {...card} />
+          ))}
+        </div>
+      ) : (
+        <div class="mt-8">
+          <EmptyState title="まだ記事がありません" description="このタグの記事は準備中です。" />
+        </div>
+      )
+    }
+  </Container>
+</BaseLayout>

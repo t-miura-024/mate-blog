@@ -1,0 +1,171 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "unicorn", "import"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn"
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "import/no-unassigned-import": [
+      "error",
+      {
+        "allow": ["**/*.css"]
+      }
+    ],
+    "no-console": "error",
+    "eqeqeq": ["error", "always"],
+    "no-var": "error",
+    "prefer-const": "error",
+    "no-throw-literal": "error",
+    "no-duplicate-imports": [
+      "error",
+      {
+        "includeExports": true
+      }
+    ],
+    "object-shorthand": ["error", "always"],
+    "no-param-reassign": [
+      "error",
+      {
+        "props": true
+      }
+    ],
+    "curly": ["error", "all"],
+    "id-denylist": ["error", "data", "info", "manager", "handler", "utils", "helper", "common"],
+    "max-lines": [
+      "error",
+      {
+        "max": 300,
+        "skipBlankLines": false,
+        "skipComments": false
+      }
+    ],
+    "max-lines-per-function": [
+      "error",
+      {
+        "max": 180,
+        "skipBlankLines": false,
+        "skipComments": false
+      }
+    ],
+    "max-depth": ["error", 6],
+    "max-nested-callbacks": ["error", 3],
+    "no-underscore-dangle": "off",
+    "unicorn/consistent-function-scoping": "off",
+    "oxc/no-barrel-file": "error",
+    "import/no-default-export": "error",
+    "unicorn/filename-case": "error",
+    "typescript/consistent-type-assertions": "off",
+    "typescript/consistent-type-definitions": "off",
+    "typescript/no-explicit-any": "off",
+    "typescript/no-non-null-assertion": "off",
+    "typescript/explicit-function-return-type": "off",
+    "typescript/explicit-module-boundary-types": "off",
+    "typescript/no-floating-promises": "off",
+    "typescript/no-misused-promises": "off",
+    "typescript/require-await": "off",
+    "typescript/no-unsafe-argument": "off",
+    "typescript/no-unsafe-assignment": "off",
+    "typescript/no-unsafe-call": "off",
+    "typescript/no-unsafe-member-access": "off",
+    "typescript/no-unsafe-return": "off"
+  },
+  "overrides": [
+    {
+      "files": ["src/lib/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              "@/components",
+              "@/components/**",
+              "@/layouts",
+              "@/layouts/**",
+              "@/pages",
+              "@/pages/**",
+              "**/components/**",
+              "**/layouts/**",
+              "**/pages/**"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["src/components/**"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              "@/layouts",
+              "@/layouts/**",
+              "@/pages",
+              "@/pages/**",
+              "**/layouts/**",
+              "**/pages/**"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["**/*.tsx"],
+      "rules": {
+        "max-lines": [
+          "error",
+          {
+            "max": 400
+          }
+        ]
+      }
+    },
+    {
+      "files": ["**/*.stories.*"],
+      "rules": {
+        "import/no-default-export": "off"
+      }
+    },
+    {
+      "files": ["**/*.test.*", "**/*.spec.*"],
+      "rules": {
+        "max-lines": "off",
+        "max-lines-per-function": "off",
+        "typescript/no-extraneous-class": "off",
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["vitest.setup.ts"],
+      "rules": {
+        "import/no-unassigned-import": "off"
+      }
+    },
+    {
+      "files": [".storybook/**"],
+      "rules": {
+        "no-restricted-imports": "off",
+        "import/no-default-export": "off",
+        "no-shadow": "off",
+        "no-param-reassign": "off"
+      }
+    },
+    {
+      "files": ["astro.config.mjs", "eslint.config.js", "vitest.config.ts", "vitest.setup.ts"],
+      "rules": {
+        "no-restricted-imports": "off",
+        "import/no-default-export": "off"
+      }
+    }
+  ],
+  "ignorePatterns": [
+    "dist/",
+    "coverage/",
+    "storybook-static/",
+    ".astro/",
+    "node_modules/",
+    ".wrangler/"
+  ]
+}

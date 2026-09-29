@@ -1,0 +1,17 @@
+---
+import { Button } from '@/components/button';
+import { Container } from '@/components/container';
+import { EmptyState } from '@/components/empty-state';
+import BaseLayout from '@/layouts/base-layout.astro';
+---
+
+<BaseLayout title="ページが見つかりません">
+  <Container size="narrow" className="py-16">
+    <EmptyState
+      title="ページが見つかりません"
+      description="お探しのページは、移動または削除された可能性があります。"
+    >
+      <Button href="/">トップへ戻る</Button>
+    </EmptyState>
+  </Container>
+</BaseLayout>

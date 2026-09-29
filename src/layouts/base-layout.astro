@@ -1,0 +1,73 @@
+---
+import { SiteFooter } from '@/components/site-footer';
+import { SiteHeader } from '@/components/site-header';
+import { FOOTER_LINKS, NAV_LINKS } from '@/lib/navigation';
+import { buildSeoMeta } from '@/lib/seo';
+import { buildPageTitle, SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE } from '@/lib/site';
+import '@/styles/global.css';
+
+type Props = {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+  ogImageUrl?: string;
+  ogType?: 'website' | 'article';
+};
+
+const {
+  title,
+  description = SITE_DESCRIPTION,
+  noindex = false,
+  ogImageUrl,
+  ogType = 'website',
+} = Astro.props;
+const pageTitle = buildPageTitle(title);
+const canonicalUrl =
+  Astro.site === undefined ? Astro.url.pathname : new URL(Astro.url.pathname, Astro.site).href;
+const seoMeta = buildSeoMeta({
+  title: pageTitle,
+  description,
+  url: canonicalUrl,
+  siteName: SITE_NAME,
+  type: ogType,
+  imageUrl: ogImageUrl,
+});
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {
+      seoMeta.map((meta) =>
+        'property' in meta ? (
+          <meta property={meta.property} content={meta.content} />
+        ) : (
+          <meta name={meta.name} content={meta.content} />
+        ),
+      )
+    }
+    {noindex && <meta name="robots" content="noindex" />}
+    <slot name="head" />
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:bg-base focus:px-4 focus:py-2 focus:text-accent-strong"
+    >
+      本文へスキップ
+    </a>
+    <SiteHeader siteName={SITE_NAME} tagline={SITE_TAGLINE} links={NAV_LINKS} />
+    <main id="main" class="min-h-[50vh]">
+      <slot />
+    </main>
+    <SiteFooter siteName={SITE_NAME} links={FOOTER_LINKS} />
+  </body>
+</html>

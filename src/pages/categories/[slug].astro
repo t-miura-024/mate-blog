@@ -1,0 +1,61 @@
+---
+import { MICROCMS_API_KEY, MICROCMS_SERVICE_DOMAIN } from 'astro:env/server';
+import { ArticleCard } from '@/components/article-card';
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import { CategoryNav } from '@/components/category-nav';
+import { Container } from '@/components/container';
+import { EmptyState } from '@/components/empty-state';
+import { PageTitle } from '@/components/page-title';
+import BaseLayout from '@/layouts/base-layout.astro';
+import { getArticlesByCategorySlug, toArticleCardData, type ArticleCardData } from '@/lib/articles';
+import { CATEGORIES, categoryHref, type Category } from '@/lib/categories';
+import { getArticleSource } from '@/lib/microcms';
+
+export async function getStaticPaths() {
+  const source = getArticleSource({
+    serviceDomain: MICROCMS_SERVICE_DOMAIN,
+    apiKey: MICROCMS_API_KEY,
+  });
+  const articles = await source.listAll();
+  return CATEGORIES.map((category) => ({
+    params: { slug: category.slug },
+    props: {
+      category,
+      articles: getArticlesByCategorySlug(articles, category.slug).map(toArticleCardData),
+    },
+  }));
+}
+
+type Props = {
+  category: Category;
+  articles: ArticleCardData[];
+};
+
+const { category, articles } = Astro.props;
+const categoryNavItems = CATEGORIES.map((item) => ({ name: item.name, href: categoryHref(item) }));
+---
+
+<BaseLayout title={category.name} description={`${category.name}の記事をまとめています。`}>
+  <Container className="py-12">
+    <Breadcrumbs items={[{ label: '記事一覧', href: '/articles/' }, { label: category.name }]} />
+    <div class="mt-6">
+      <PageTitle>{category.name}</PageTitle>
+    </div>
+    <div class="mt-6">
+      <CategoryNav categories={categoryNavItems} currentHref={categoryHref(category)} />
+    </div>
+    {
+      articles.length > 0 ? (
+        <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {articles.map((card) => (
+            <ArticleCard {...card} />
+          ))}
+        </div>
+      ) : (
+        <div class="mt-8">
+          <EmptyState title="まだ記事がありません" description="この時期の記事は準備中です。" />
+        </div>
+      )
+    }
+  </Container>
+</BaseLayout>

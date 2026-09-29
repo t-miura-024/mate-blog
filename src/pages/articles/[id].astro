@@ -1,0 +1,78 @@
+---
+import { MICROCMS_API_KEY, MICROCMS_SERVICE_DOMAIN } from 'astro:env/server';
+import { AuthorBox } from '@/components/author-box';
+import { Breadcrumbs } from '@/components/breadcrumbs';
+import { Container } from '@/components/container';
+import { PrevNextNavigation } from '@/components/prev-next-navigation';
+import { RelatedArticles } from '@/components/related-articles';
+import { ShareButtons } from '@/components/share-buttons';
+import BaseLayout from '@/layouts/base-layout.astro';
+import ArticleContent from '@/layouts/article-content.astro';
+import { articleHref, selectAdjacentArticles, selectRelatedArticles, toArticleCardData } from '@/lib/articles';
+import { getArticleSource } from '@/lib/microcms';
+import { buildArticleStructuredData, serializeStructuredData } from '@/lib/structured-data';
+import { AUTHOR_DESCRIPTION, AUTHOR_NAME, SITE_NAME } from '@/lib/site';
+
+const source = getArticleSource({
+  serviceDomain: MICROCMS_SERVICE_DOMAIN,
+  apiKey: MICROCMS_API_KEY,
+});
+
+export async function getStaticPaths() {
+  const articles = await getArticleSource({
+    serviceDomain: MICROCMS_SERVICE_DOMAIN,
+    apiKey: MICROCMS_API_KEY,
+  }).listAll();
+  return articles.map((article) => ({ params: { id: article.id }, props: { article } }));
+}
+
+const { article } = Astro.props;
+const articles = await source.listAll();
+const relatedArticles = selectRelatedArticles(articles, article).map(toArticleCardData);
+const adjacent = selectAdjacentArticles(articles, article);
+const prev =
+  adjacent.prev === undefined ? undefined : { title: adjacent.prev.title, href: articleHref(adjacent.prev) };
+const next =
+  adjacent.next === undefined ? undefined : { title: adjacent.next.title, href: articleHref(adjacent.next) };
+
+const canonicalUrl =
+  Astro.site === undefined ? Astro.url.pathname : new URL(Astro.url.pathname, Astro.site).href;
+const structuredData = serializeStructuredData(
+  buildArticleStructuredData({
+    title: article.title,
+    description: article.excerpt,
+    url: canonicalUrl,
+    publishedAt: article.publishedAt,
+    imageUrl: article.eyecatchUrl,
+    authorName: AUTHOR_NAME,
+    siteName: SITE_NAME,
+  }),
+);
+---
+
+<BaseLayout
+  title={article.title}
+  description={article.excerpt}
+  ogType="article"
+  ogImageUrl={article.eyecatchUrl}
+>
+  <script slot="head" type="application/ld+json" set:html={structuredData} />
+  <Container size="narrow" className="py-10">
+    <Breadcrumbs items={[{ label: '記事一覧', href: '/articles/' }, { label: article.title }]} />
+    <div class="mt-6">
+      <ArticleContent article={article} />
+    </div>
+    <div class="mt-8">
+      <ShareButtons url={Astro.url.pathname} title={article.title} />
+    </div>
+    <div class="mt-10">
+      <AuthorBox name={AUTHOR_NAME} description={AUTHOR_DESCRIPTION} />
+    </div>
+  </Container>
+  <Container>
+    <RelatedArticles articles={relatedArticles} />
+  </Container>
+  <Container size="narrow" className="py-12">
+    <PrevNextNavigation prev={prev} next={next} />
+  </Container>
+</BaseLayout>

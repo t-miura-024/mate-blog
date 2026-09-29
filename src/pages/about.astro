@@ -1,0 +1,30 @@
+---
+import { AuthorBox } from '@/components/author-box';
+import { Container } from '@/components/container';
+import { Notice } from '@/components/notice';
+import { PageTitle } from '@/components/page-title';
+import BaseLayout from '@/layouts/base-layout.astro';
+import { AUTHOR_DESCRIPTION, AUTHOR_NAME } from '@/lib/site';
+---
+
+<BaseLayout title="このブログについて">
+  <Container size="narrow" className="py-12">
+    <PageTitle description="サイトの目的と、書いている人について。">このブログについて</PageTitle>
+    <div class="mt-8 space-y-6">
+      <p>
+        「おなかのそと」は、妊娠・出産・育児で経験したことを、母親の視点で記録していくブログです。
+      </p>
+      <p>
+        同じ境遇のママに、少しでも参考になる体験を届けられたらうれしいです。書けるときに、書けるだけ、を大切にしています。
+      </p>
+    </div>
+    <div class="mt-10">
+      <AuthorBox name={AUTHOR_NAME} description={AUTHOR_DESCRIPTION} />
+    </div>
+    <div class="mt-10">
+      <Notice tone="accent">
+        このブログの健康・医療に関する内容は、個人の体験に基づく記録です。体調や治療の判断は、必ずかかりつけの医療機関にご相談ください。
+      </Notice>
+    </div>
+  </Container>
+</BaseLayout>

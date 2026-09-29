@@ -1,0 +1,81 @@
+@import 'tailwindcss';
+@import '@fontsource/noto-sans-jp/400.css';
+@import '@fontsource/noto-sans-jp/500.css';
+@import '@fontsource/noto-sans-jp/700.css';
+@import '@fontsource/zen-maru-gothic/500.css';
+@import '@fontsource/zen-maru-gothic/700.css';
+
+@plugin '@tailwindcss/typography';
+
+@theme {
+  --color-base: #ffffff;
+  --color-surface: #fafaf8;
+  --color-surface-emphasis: #f1efe9;
+  --color-text: #2e3230;
+  --color-text-subtle: #5f6a63;
+  --color-border: #e6e4dd;
+  --color-accent: #7c9a82;
+  --color-accent-strong: #4f6f57;
+  --color-accent-soft: #e9f0ea;
+  --color-focus: #4f6f57;
+
+  --font-heading: 'Zen Maru Gothic', 'Hiragino Maru Gothic ProN', sans-serif;
+  --font-body: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+
+  --text-display: 2rem;
+  --text-display--line-height: 1.4;
+  --text-h2: 1.5rem;
+  --text-h2--line-height: 1.5;
+  --text-h3: 1.25rem;
+  --text-h3--line-height: 1.6;
+  --text-body: 1rem;
+  --text-body--line-height: 1.9;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.7;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --shadow-soft: 0 1px 2px rgb(46 50 48 / 0.04), 0 8px 24px rgb(46 50 48 / 0.06);
+
+  --container-content: 720px;
+  --container-site: 1080px;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    font-family: var(--font-body);
+    line-height: 1.9;
+    color: var(--color-text);
+    background-color: var(--color-base);
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    line-height: 1.5;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
