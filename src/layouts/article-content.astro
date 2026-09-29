@@ -31,7 +31,13 @@ if (category === undefined) {
   {
     article.eyecatchUrl !== undefined && (
       <div class="mt-8">
-        <PhotoFigure src={article.eyecatchUrl} alt={article.eyecatchAlt ?? article.title} />
+        <PhotoFigure
+          src={article.eyecatchUrl}
+          alt={article.eyecatchAlt ?? article.title}
+          aspect="video"
+          loading="eager"
+          fetchPriority="high"
+        />
       </div>
     )
   }

@@ -77,7 +77,9 @@ space-1: 4px / space-2: 8px / space-3: 12px / space-4: 16px / space-6: 24px / sp
 - 大きく表示し、角丸 radius-lg、キャプション付き
 - alt は写真の内容を描写する（実名・場所など特定情報は書かない）
 - アイキャッチは任意。ない場合でも余白とタイポグラフィで成立させる
-- microCMS の画像 URL パラメータで必要なサイズを指定する（多重最適化を避ける）
+- 配信は microCMS の画像 API（imgix）で幅違い URL を生成し、`srcset` / `sizes` で出し分ける（カード 320〜960px / 記事ヘッダー 480〜1440px、WebP・品質 80）
+- 記事ヘッダーのアイキャッチは `loading="eager"` + `fetchpriority="high"`、カードは `loading="lazy"`
+- OGP 画像（`og:image`）は元画像の URL をそのまま使う（クローラー互換のため）
 
 ## コンポーネント一覧
 

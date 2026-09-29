@@ -22,3 +22,13 @@ export const WithoutCaption: Story = {
     caption: undefined,
   },
 };
+
+export const HeroImage: Story = {
+  args: {
+    src: 'https://images.microcms-assets.io/assets/aaa/bbb/photo.png',
+    caption: undefined,
+    aspect: 'video',
+    loading: 'eager',
+    fetchPriority: 'high',
+  },
+};
