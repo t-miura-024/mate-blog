@@ -1,0 +1,23 @@
+---
+import { Container } from '@/components/container';
+import { Notice } from '@/components/notice';
+import { PageTitle } from '@/components/page-title';
+import { TextLink } from '@/components/text-link';
+import BaseLayout from '@/layouts/base-layout.astro';
+import { CONTACT_EMAIL } from '@/lib/site';
+---
+
+<BaseLayout title="お問い合わせ">
+  <Container size="narrow" className="py-12">
+    <PageTitle description="記事へのご指摘、掲載内容に関するご連絡はこちらへ。">お問い合わせ</PageTitle>
+    <p class="mt-8">
+      記事内容へのご指摘、掲載内容の修正・削除のご依頼などは、下記のメールアドレスまでご連絡ください。
+    </p>
+    <p class="mt-4">
+      <TextLink href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</TextLink>
+    </p>
+    <div class="mt-8">
+      <Notice>お返事には数日いただく場合があります。あらかじめご了承ください。</Notice>
+    </div>
+  </Container>
+</BaseLayout>

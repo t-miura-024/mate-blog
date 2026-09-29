@@ -1,0 +1,25 @@
+---
+import { MICROCMS_API_KEY, MICROCMS_SERVICE_DOMAIN } from 'astro:env/server';
+import { ArticleCard } from '@/components/article-card';
+import { Container } from '@/components/container';
+import { PageTitle } from '@/components/page-title';
+import BaseLayout from '@/layouts/base-layout.astro';
+import { sortArticlesByPublishedAtDesc, toArticleCardData } from '@/lib/articles';
+import { getArticleSource } from '@/lib/microcms';
+
+const source = getArticleSource({
+  serviceDomain: MICROCMS_SERVICE_DOMAIN,
+  apiKey: MICROCMS_API_KEY,
+});
+
+const articles = sortArticlesByPublishedAtDesc(await source.listAll()).map(toArticleCardData);
+---
+
+<BaseLayout title="記事一覧">
+  <Container className="py-12">
+    <PageTitle description="妊娠・出産・育児の体験をまとめています。">記事一覧</PageTitle>
+    <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {articles.map((card) => <ArticleCard {...card} />)}
+    </div>
+  </Container>
+</BaseLayout>

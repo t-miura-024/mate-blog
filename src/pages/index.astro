@@ -1,0 +1,48 @@
+---
+import { MICROCMS_API_KEY, MICROCMS_SERVICE_DOMAIN } from 'astro:env/server';
+import { ArticleCard } from '@/components/article-card';
+import { Button } from '@/components/button';
+import { CategoryNav } from '@/components/category-nav';
+import { Container } from '@/components/container';
+import BaseLayout from '@/layouts/base-layout.astro';
+import { getLatestArticles, toArticleCardData } from '@/lib/articles';
+import { CATEGORIES, categoryHref } from '@/lib/categories';
+import { getArticleSource } from '@/lib/microcms';
+import { SITE_DESCRIPTION, SITE_TAGLINE } from '@/lib/site';
+
+const source = getArticleSource({
+  serviceDomain: MICROCMS_SERVICE_DOMAIN,
+  apiKey: MICROCMS_API_KEY,
+});
+
+const articles = await source.listAll();
+const latestArticles = getLatestArticles(articles, 3).map(toArticleCardData);
+const categoryNavItems = CATEGORIES.map((category) => ({
+  name: category.name,
+  href: categoryHref(category),
+}));
+---
+
+<BaseLayout title="トップ">
+  <section class="py-16">
+    <Container size="narrow">
+      <p class="text-small text-text-subtle">{SITE_TAGLINE}</p>
+      <h1 class="mt-4 text-display font-bold">おなかのそと</h1>
+      <p class="mt-6">{SITE_DESCRIPTION}</p>
+      <div class="mt-8">
+        <CategoryNav categories={categoryNavItems} />
+      </div>
+    </Container>
+  </section>
+  <section aria-labelledby="latest-articles" class="pb-16">
+    <Container>
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <h2 id="latest-articles" class="text-h2 font-bold">最新の記事</h2>
+        <Button href="/articles/" variant="text">記事一覧を見る</Button>
+      </div>
+      <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {latestArticles.map((card) => <ArticleCard {...card} />)}
+      </div>
+    </Container>
+  </section>
+</BaseLayout>
