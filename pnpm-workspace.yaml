@@ -1,4 +1,12 @@
+packages:
+  - '.'
+
+# pnpm 12+（allowBuilds）と pnpm 10 系（onlyBuiltDependencies）の両対応
 allowBuilds:
   esbuild: true
   lefthook: true
   workerd: true
+onlyBuiltDependencies:
+  - esbuild
+  - lefthook
+  - workerd
