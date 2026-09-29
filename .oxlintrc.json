@@ -158,6 +158,12 @@
         "no-restricted-imports": "off",
         "import/no-default-export": "off"
       }
+    },
+    {
+      "files": ["scripts/**"],
+      "rules": {
+        "no-console": "off"
+      }
     }
   ],
   "ignorePatterns": [
