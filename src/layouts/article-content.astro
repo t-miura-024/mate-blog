@@ -2,6 +2,7 @@
 import { ArticleBody } from '@/components/article-body';
 import { ArticleMeta } from '@/components/article-meta';
 import { MedicalNotice } from '@/components/medical-notice';
+import { PhotoFigure } from '@/components/photo-figure';
 import { Toc } from '@/components/toc';
 import { toTagLinks, type Article } from '@/lib/articles';
 import { categoryHref, getCategoryBySlug } from '@/lib/categories';
@@ -27,6 +28,13 @@ if (category === undefined) {
       tags={toTagLinks(article.tags)}
     />
   </div>
+  {
+    article.eyecatchUrl !== undefined && (
+      <div class="mt-8">
+        <PhotoFigure src={article.eyecatchUrl} alt={article.eyecatchAlt ?? article.title} />
+      </div>
+    )
+  }
   {article.tocItems.length > 0 && <Toc items={article.tocItems} className="mt-8" />}
   <ArticleBody className="mt-8">
     <Fragment set:html={article.html} />

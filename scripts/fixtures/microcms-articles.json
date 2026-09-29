@@ -10,7 +10,13 @@
       "showMedicalNotice": true,
       "tags": "つわり, 食事",
       "title": "つわりの時期に食べられたもの",
-      "updatedAt": "2026-08-30T09:00:00.000Z"
+      "updatedAt": "2026-08-30T09:00:00.000Z",
+      "eyecatch": {
+        "url": "https://images.microcms-assets.io/assets/demo/eyecatch-sample.png",
+        "width": 1200,
+        "height": 630
+      },
+      "eyecatchAlt": "サンプルのアイキャッチ"
     },
     {
       "body": "<h2>最初は「腸が動いた？」という感覚</h2><p>最初に感じたのは、腸が動くような小さな違和感でした。胎動だと気づくまで数日かかりました。</p><h3>日々の記録のしかた</h3><p>感じた時間と回数をメモに残し、健診のときに聞いてもらっていました。</p>",
