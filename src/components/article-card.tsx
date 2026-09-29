@@ -1,6 +1,10 @@
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/cn';
+import { buildImageSrcSet } from '@/lib/image';
 import { ArticleMeta } from './article-meta';
+
+const EYECATCH_WIDTHS = [320, 480, 640, 960];
+const EYECATCH_SIZES = '(min-width: 1080px) 344px, (min-width: 640px) 50vw, 100vw';
 
 export type ArticleCardTag = {
   label: string;
@@ -42,7 +46,11 @@ export function ArticleCard({
       {eyecatchUrl !== undefined && (
         <img
           src={eyecatchUrl}
+          srcSet={buildImageSrcSet(eyecatchUrl, EYECATCH_WIDTHS)}
+          sizes={EYECATCH_SIZES}
           alt={eyecatchAlt ?? ''}
+          loading="lazy"
+          decoding="async"
           className="mb-4 aspect-video w-full rounded-md object-cover"
         />
       )}

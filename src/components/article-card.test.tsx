@@ -45,6 +45,20 @@ describe('ArticleCard', () => {
     expect(container.querySelector('img')).toBeNull();
   });
 
+  it('microCMS のアイキャッチ URL では srcset を生成する', () => {
+    render(
+      <ArticleCard
+        {...baseProps}
+        eyecatchUrl="https://images.microcms-assets.io/assets/aaa/bbb/photo.png"
+        eyecatchAlt="星空の写真"
+      />,
+    );
+
+    expect(screen.getByRole('img', { name: '星空の写真' }).getAttribute('srcset')).toContain(
+      'w=320&q=80&fm=webp 320w',
+    );
+  });
+
   it('日付・カテゴリ・タグを描画する', () => {
     render(<ArticleCard {...baseProps} tags={[{ label: '夜泣き', href: '/tags/yonaki/' }]} />);
 
